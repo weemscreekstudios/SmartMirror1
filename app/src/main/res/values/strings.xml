@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SmartMirror1</string>
+    <string name="annapolis"><html> <head></head> <body bgcolor="505050"> "{"coord":{"lon":-0.13,"lat":51.51},"weather":[{"id":802,"main":"Clouds","description":"scattered clouds","icon":"03d"}],"base":"cmc stations","main":{"temp":276.605,"pressure":1034.33,"humidity":95,"temp_min":276.605,"temp_max":276.605,"sea_level":1044.69,"grnd_level":1034.33},"wind":{"speed":1.86,"deg":112.502},"clouds":{"all":44},"dt":1457768166,"sys":{"message":0.0086,"country":"GB","sunrise":1457763591,"sunset":1457805670},"id":2643743,"name":"London","cod":200}" </body> </html></string>
+    <string name="LondonOpenWeatherMapAPI"><![CDATA[http://api.openweathermap.org/data/2.5/weather?q=London&mode=html&appid=40ccc628e578669ca8c47e31599b0d04]]></string>
+    <string name="AnnapolisOpenWeatherMapAPI"><![CDATA[http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04]]></string>
+    <string name="preferenceName">SmartMirror1</string>
+    <string name="loadErrorURLHTML"><html> <head></head> <body bgcolor="505050"> "So sorry, the HTML from the preference value did not load correctly" </body> </html></string>
+</resources>
+
