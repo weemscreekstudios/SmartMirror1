@@ -30,7 +30,7 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_smart_mirror1_main);
+        setContentView(R.layout.activity_smart_mirror1_main);  //main activity
 
 
         PREFS_NAME = this.getString(R.string.preferenceName);  //set the PREFS_NAME at create time
