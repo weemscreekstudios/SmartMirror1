@@ -3,6 +3,7 @@ package com.weemscreekstudios.smartmirror1;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
 import android.webkit.WebView;
 import android.content.SharedPreferences;
 
@@ -30,6 +31,7 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smart_mirror1_main);
+
 
         PREFS_NAME = this.getString(R.string.preferenceName);  //set the PREFS_NAME at create time
 
