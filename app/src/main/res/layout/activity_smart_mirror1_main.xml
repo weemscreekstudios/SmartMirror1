@@ -11,21 +11,23 @@
     android:background="#000000">
 
     <WebView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="280dp"
+        android:layout_height="350dp"
         android:id="@+id/webView"
         android:layout_alignRight="@+id/textClock"
         android:layout_alignEnd="@+id/textClock"
-        android:layout_marginTop="270dp" />
+        android:layout_marginTop="270dp"
+        android:layout_toEndOf="@+id/webView2" />
 
     <WebView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="280dp"
+        android:layout_height="350dp"
         android:id="@+id/webView2"
         android:background="#8e0c0c"
         android:layout_alignTop="@+id/webView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="false" />
 
     <TextClock
         android:layout_width="wrap_content"
@@ -48,5 +50,44 @@
         android:layout_alignEnd="@+id/webView"
         android:progress="65"
         android:progressTint="#f7f3f3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="10:07:15"
+        android:id="@+id/textViewLastUpdateTime"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_toEndOf="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="10:27:15"
+        android:id="@+id/textViewNextUpdateTime"
+        android:layout_above="@+id/progressBar"
+        android:layout_alignEnd="@+id/textClock" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Last Update:"
+        android:id="@+id/textView"
+        android:layout_alignTop="@+id/textViewLastUpdateTime"
+        android:layout_alignParentStart="true"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Next Update:"
+        android:id="@+id/textView2"
+        android:layout_alignTop="@+id/textViewNextUpdateTime"
+        android:layout_toStartOf="@+id/textViewNextUpdateTime"
+        android:phoneNumber="true"
+        android:singleLine="true" />
 
 </RelativeLayout>

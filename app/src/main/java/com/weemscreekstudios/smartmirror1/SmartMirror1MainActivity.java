@@ -37,17 +37,28 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
 
         //String data = this.getString(R.string.weatherlondonHTML);   //data == html data which you want to load
         String data1 = this.getString(R.string.annapolis);   //data == html data which you want to load
+        String LondonAPIUrl = this.getString(R.string.LondonOpenWeatherMapAPI);  //loads the openweathermap API URL
 
         WebView webview = (WebView) this.findViewById(R.id.webView);
         webview.getSettings().setJavaScriptEnabled(true);
+        webview.setInitialScale(400);
        // webview.loadData(data1, "text/html", "UTF-8"); this loads from a string
-        webview.loadUrl("file:///android_asset/openweatherapi-annapolis-black.htm"); //load html file from asset library
-
+        //webview.loadUrl("file:///android_asset/openweatherapi-annapolis-black.htm"); //load html file from asset library - works
+        webview.loadUrl(LondonAPIUrl); //works
 
         String AnnapolisAPIUrl = this.getString(R.string.AnnapolisOpenWeatherMapAPI);
 
         WebView webview2 = (WebView) this.findViewById(R.id.webView2);
         webview2.getSettings().setJavaScriptEnabled(true);
+        //webview2.getSettings().setUseWideViewPort(true);
+        //webview2.getSettings().setLoadWithOverviewMode(true);
+        //webview2.getSettings().setBuiltInZoomControls(true);
+        //webview2.zoomBy(100.0f);
+        webview2.setInitialScale(400);
+        //webview2.setScaleX(1.0f);
+        //webview2.setScaleY(1.0f);
+        //webview2.zoomBy(90.0f);
+
         //webview2.loadUrl(AnnapolisAPIUrl); //works
         //webview2.loadUrl("http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04"); //works
         webview2.loadUrl("file:///android_asset/openweatherapi-london-black.htm"); //load html file from asset library
