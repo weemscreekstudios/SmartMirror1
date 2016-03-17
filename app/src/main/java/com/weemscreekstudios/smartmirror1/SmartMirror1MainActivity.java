@@ -1,11 +1,13 @@
 package com.weemscreekstudios.smartmirror1;
 
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.webkit.WebView;
 import android.content.SharedPreferences;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -27,6 +29,8 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
     public String VancouverOpenWeatherMapAPIHTML; //HTML returned for Vancouver, WA
     public String CheltenhamOpenWeatherMapAPIHTML; //HTML returned for Cheltenham, UK
 
+    TextView textViewLastUpdateTime, textViewNextUpdateTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,9 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
 
 
         PREFS_NAME = this.getString(R.string.preferenceName);  //set the PREFS_NAME at create time
+
+        textViewLastUpdateTime = (TextView) findViewById(R.id.textViewLastUpdateTime);
+        textViewNextUpdateTime = (TextView) findViewById(R.id.textViewNextUpdateTime);
 
         //String data = this.getString(R.string.weatherlondonHTML);   //data == html data which you want to load
         String data1 = this.getString(R.string.annapolis);   //data == html data which you want to load
@@ -62,6 +69,18 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
         //webview2.loadUrl(AnnapolisAPIUrl); //works
         //webview2.loadUrl("http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04"); //works
         webview2.loadUrl("file:///android_asset/openweatherapi-london-black.htm"); //load html file from asset library
+
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                textViewLastUpdateTime.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                textViewNextUpdateTime.setText("done!");
+            }
+        }.start();
+
     }
 
     public void RestorePrefrences() {
