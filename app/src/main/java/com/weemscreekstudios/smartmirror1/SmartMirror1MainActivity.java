@@ -1,9 +1,11 @@
 package com.weemscreekstudios.smartmirror1;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 import android.content.SharedPreferences;
@@ -26,7 +28,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
     CheltenhamOpenWeatherMapAPIHTML = HTML returned for Cheltenham, UK
  */
 
-public class SmartMirror1MainActivity extends AppCompatActivity {
+public class SmartMirror1MainActivity extends Activity {
 
     public String PREFS_NAME = "test";
 
@@ -43,11 +45,19 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
     boolean timerFlag = false;  //flag to know if timer was activitated the first time
     long updateInterval = 600000;   //600,000 millsec is 10 minutes
 
+    WebView webview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE); //run in fulls screen mode
         setContentView(R.layout.activity_smart_mirror1_main);  //main activity
+
+        // Hide the status bar.
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
 
         PREFS_NAME = this.getString(R.string.preferenceName);  //set the PREFS_NAME at create time
 
@@ -59,7 +69,7 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
         String data1 = this.getString(R.string.annapolis);   //data == html data which you want to load
         String LondonAPIUrl = this.getString(R.string.LondonOpenWeatherMapAPI);  //loads the openweathermap API URL
 
-        WebView webview = (WebView) this.findViewById(R.id.webView);
+        webview = (WebView) this.findViewById(R.id.webView);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.setInitialScale(400);
        // webview.loadData(data1, "text/html", "UTF-8"); this loads from a string
@@ -92,6 +102,7 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
                  textViewLastUpdateTime.setText(sdf.format(dateTimeStampNow)); //display last update time from a date
                  textViewNextUpdateTime.setText(sdf.format(dateTimeNowMillisec+updateInterval)); //next update time
                  //timeToNextUpdateProgressBar.setProgress(Counter++); //not using at the moment
+                 webview.reload();  //refresh the page - API only allows once per 10 minutes
                  handler.postDelayed(this, updateInterval); //20 minutes - 1200 sec = 1,200,000 millisec
              }
          };
