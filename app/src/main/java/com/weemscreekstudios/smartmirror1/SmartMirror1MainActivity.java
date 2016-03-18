@@ -67,14 +67,15 @@ public class SmartMirror1MainActivity extends Activity {
 
         //String data = this.getString(R.string.weatherlondonHTML);   //data == html data which you want to load
         String data1 = this.getString(R.string.annapolis);   //data == html data which you want to load
-        String LondonAPIUrl = this.getString(R.string.LondonOpenWeatherMapAPI);  //loads the openweathermap API URL
+        //String webViewUrl = this.getString(R.string.LondonOpenWeatherMapAPI);  //loads the openweathermap API URL
+        String webViewIUrl = this.getString(R.string.CheltenhamOpenWeatherMapAPI);  //loads the openweathermap API URL
 
         webview = (WebView) this.findViewById(R.id.webView);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.setInitialScale(400);
        // webview.loadData(data1, "text/html", "UTF-8"); this loads from a string
         //webview.loadUrl("file:///android_asset/openweatherapi-annapolis-black.htm"); //load html file from asset library - works
-        webview.loadUrl(LondonAPIUrl); //works
+        webview.loadUrl(webViewIUrl); //works
 
         String AnnapolisAPIUrl = this.getString(R.string.AnnapolisOpenWeatherMapAPI);
 
