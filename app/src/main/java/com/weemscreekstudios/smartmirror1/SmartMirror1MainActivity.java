@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.view.Window;
 import android.webkit.WebView;
 import android.content.SharedPreferences;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import android.os.Handler;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+
 
 /* Preferences
     AnnapolisOpenWeatherMapAPIHTML  = HTML returned for Annapolis, MD
@@ -30,17 +33,22 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
     public String CheltenhamOpenWeatherMapAPIHTML; //HTML returned for Cheltenham, UK
 
     TextView textViewLastUpdateTime, textViewNextUpdateTime;
+    ProgressBar timeToNextUpdateProgressBar;
+
+    Handler handler = new Handler();    //handler for timer updates
+    int Counter = 0; //counter for loop to show timer is work
+    boolean timerFlag = false;  //flag to know if timer was activitated the first time
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smart_mirror1_main);  //main activity
 
-
         PREFS_NAME = this.getString(R.string.preferenceName);  //set the PREFS_NAME at create time
 
         textViewLastUpdateTime = (TextView) findViewById(R.id.textViewLastUpdateTime);
         textViewNextUpdateTime = (TextView) findViewById(R.id.textViewNextUpdateTime);
+        timeToNextUpdateProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         //String data = this.getString(R.string.weatherlondonHTML);   //data == html data which you want to load
         String data1 = this.getString(R.string.annapolis);   //data == html data which you want to load
@@ -70,7 +78,7 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
         //webview2.loadUrl("http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04"); //works
         webview2.loadUrl("file:///android_asset/openweatherapi-london-black.htm"); //load html file from asset library
 
-        new CountDownTimer(30000, 1000) {
+  /*      new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 textViewLastUpdateTime.setText("seconds remaining: " + millisUntilFinished / 1000);
@@ -79,7 +87,22 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
             public void onFinish() {
                 textViewNextUpdateTime.setText("done!");
             }
-        }.start();
+        }.start(); */
+
+         Runnable runnable = new Runnable() {
+             @Override
+             public void run() {
+                 textViewLastUpdateTime.setText(String.valueOf(Counter++));
+                 handler.postDelayed(this, 10000); //20 minutes - 1200 sec = 1,200,000 millisec
+                 timeToNextUpdateProgressBar.setProgress(Counter);
+                 if (!timerFlag){
+                     textViewNextUpdateTime.setText("First Timer");
+                     timerFlag = true;
+                 }
+             }
+         };
+        handler.post(runnable);
+
 
     }
 
