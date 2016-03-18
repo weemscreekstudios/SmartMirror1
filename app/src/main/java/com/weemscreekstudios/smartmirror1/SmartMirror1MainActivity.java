@@ -10,6 +10,9 @@ import android.content.SharedPreferences;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.os.Handler;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,6 +41,8 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
     Handler handler = new Handler();    //handler for timer updates
     int Counter = 0; //counter for loop to show timer is work
     boolean timerFlag = false;  //flag to know if timer was activitated the first time
+    long updateInterval = 600000;   //600,000 millsec is 10 minutes
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +86,13 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
              @Override
              public void run() {
-                 textViewLastUpdateTime.setText(String.valueOf(Counter++));
-                 handler.postDelayed(this, 10000); //20 minutes - 1200 sec = 1,200,000 millisec
-                 timeToNextUpdateProgressBar.setProgress(Counter);
-                 if (!timerFlag){
-                     textViewNextUpdateTime.setText("First Timer");
-                     timerFlag = true;
-                 }
+                 Date dateTimeStampNow = new Date(); //initializes to current time
+                 long dateTimeNowMillisec = dateTimeStampNow.getTime(); //get current time in millisecs
+                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); //set format to AM/PM
+                 textViewLastUpdateTime.setText(sdf.format(dateTimeStampNow)); //display last update time from a date
+                 textViewNextUpdateTime.setText(sdf.format(dateTimeNowMillisec+updateInterval)); //next update time
+                 //timeToNextUpdateProgressBar.setProgress(Counter++); //not using at the moment
+                 handler.postDelayed(this, updateInterval); //20 minutes - 1200 sec = 1,200,000 millisec
              }
          };
         handler.post(runnable);
