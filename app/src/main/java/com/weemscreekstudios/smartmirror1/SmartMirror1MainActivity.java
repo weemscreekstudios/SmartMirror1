@@ -44,7 +44,7 @@ public class SmartMirror1MainActivity extends Activity {
     Handler handler = new Handler();    //handler for timer updates
     int Counter = 0; //counter for loop to show timer is work
     boolean timerFlag = false;  //flag to know if timer was activitated the first time
-    long updateInterval = 600000;   //600,000 millsec is 10 minutes
+    long updateInterval = 900000;   //600,000 millsec is 10 minutes, 900,000 is 15 mins.
 
     WebView webview;
 
@@ -100,7 +100,7 @@ public class SmartMirror1MainActivity extends Activity {
         //webview2.loadUrl("http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04"); //works
         webview2.loadUrl("file:///android_asset/openweatherapi-london-black.htm"); //load html file from asset library
         Log.d(TAG, "webview2.loadUrl(file:///android_asset/openweatherapi-london-black.htm) - just happended");
-        
+
         Runnable runnable = new Runnable() {
              @Override
              public void run() {
