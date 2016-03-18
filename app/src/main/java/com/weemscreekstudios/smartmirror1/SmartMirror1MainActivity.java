@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
@@ -47,10 +48,13 @@ public class SmartMirror1MainActivity extends Activity {
 
     WebView webview;
 
+    private static final String TAG = SmartMirror1MainActivity.class.getSimpleName(); //set tag for debug logs
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() - resetting full screen and hiding navigation bar");
         requestWindowFeature(Window.FEATURE_NO_TITLE); //run in fulls screen mode
         setContentView(R.layout.activity_smart_mirror1_main);  //main activity
 
@@ -77,6 +81,7 @@ public class SmartMirror1MainActivity extends Activity {
        // webview.loadData(data1, "text/html", "UTF-8"); this loads from a string
         //webview.loadUrl("file:///android_asset/openweatherapi-annapolis-black.htm"); //load html file from asset library - works
         webview.loadUrl(webViewIUrl); //works
+        Log.d(TAG, "webview.loadUrl(webViewIUrl) just happened");
 
         String AnnapolisAPIUrl = this.getString(R.string.AnnapolisOpenWeatherMapAPI);
 
@@ -94,10 +99,12 @@ public class SmartMirror1MainActivity extends Activity {
         //webview2.loadUrl(AnnapolisAPIUrl); //works
         //webview2.loadUrl("http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04"); //works
         webview2.loadUrl("file:///android_asset/openweatherapi-london-black.htm"); //load html file from asset library
-
+        Log.d(TAG, "webview2.loadUrl(file:///android_asset/openweatherapi-london-black.htm) - just happended");
+        
         Runnable runnable = new Runnable() {
              @Override
              public void run() {
+                 Log.d(TAG, "Runnable.run() - in the time function");
                  Date dateTimeStampNow = new Date(); //initializes to current time
                  long dateTimeNowMillisec = dateTimeStampNow.getTime(); //get current time in millisecs
                  SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); //set format to AM/PM
@@ -105,6 +112,7 @@ public class SmartMirror1MainActivity extends Activity {
                  textViewNextUpdateTime.setText(sdf.format(dateTimeNowMillisec+updateInterval)); //next update time
                  //timeToNextUpdateProgressBar.setProgress(Counter++); //not using at the moment
                  webview.reload();  //refresh the page - API only allows once per 10 minutes
+                 Log.d(TAG, "webview.reload() just happened");
                  handler.postDelayed(this, updateInterval); //20 minutes - 1200 sec = 1,200,000 millisec
              }
          };
@@ -114,7 +122,7 @@ public class SmartMirror1MainActivity extends Activity {
     }
 
     protected void onResme(){
-       
+
         /*Note the following:
 
         With this approach, touching anywhere on the screen causes the navigation bar (and status bar) to reappear and remain visible.
@@ -130,10 +138,13 @@ public class SmartMirror1MainActivity extends Activity {
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+
+        Log.d(TAG, "onResume() - resetting full screen and hiding navigation bar");
     }
 
     public void RestorePrefrences() {
         // Restore preferences
+        Log.d(TAG, "In RestorePrefences()");
         String defaultText = getString(R.string.loadErrorURLHTML);   //simple HTML to show load error
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -148,7 +159,7 @@ public class SmartMirror1MainActivity extends Activity {
     public void StorePrefrences() {
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
-
+        Log.d(TAG, "In StorePrefences()");
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
 
