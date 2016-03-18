@@ -27,7 +27,8 @@
         android:layout_alignTop="@+id/webView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="false" />
+        android:layout_alignParentEnd="false"
+        android:visibility="invisible" />
 
     <TextClock
         android:layout_width="wrap_content"
@@ -36,9 +37,11 @@
         android:elegantTextHeight="false"
         android:textSize="@dimen/abc_text_size_display_3_material"
         android:textColor="@android:color/white"
-        android:format12Hour="yyyy-MM-dd\nE\nHH:mm:ss"
+        android:format12Hour="E MMM-dd-yyyy\nHH:mm:ss aa"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/textView"
+        android:gravity="right" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
