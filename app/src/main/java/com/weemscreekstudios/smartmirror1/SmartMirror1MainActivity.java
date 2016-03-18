@@ -54,9 +54,10 @@ public class SmartMirror1MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE); //run in fulls screen mode
         setContentView(R.layout.activity_smart_mirror1_main);  //main activity
 
-        // Hide the status bar.
+        // Hide the status bar and the navigation bar.
         View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
         PREFS_NAME = this.getString(R.string.preferenceName);  //set the PREFS_NAME at create time
@@ -110,6 +111,25 @@ public class SmartMirror1MainActivity extends Activity {
         handler.post(runnable);
 
 
+    }
+
+    protected void onResme(){
+       
+        /*Note the following:
+
+        With this approach, touching anywhere on the screen causes the navigation bar (and status bar) to reappear and remain visible.
+         The user interaction causes the flags to be be cleared. Once the flags have been cleared, your app needs to reset them if you
+         want to hide the bars again. See Responding to UI Visibility Changes for a discussion of how to listen for UI visibility changes
+          so that your app can respond accordingly. Where you set the UI flags makes a difference. If you hide the system bars in your
+          activity's onCreate() method and the user presses Home, the system bars will reappear. When the user reopens the activity, onCreate()
+          won't get called, so the system bars will remain visible. If you want system UI changes to persist as the user navigates in and out
+          of your activity, set UI flags in onResume() or onWindowFocusChanged(). /*/
+
+        // Hide the status bar and the navigation bar.
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
     }
 
     public void RestorePrefrences() {
