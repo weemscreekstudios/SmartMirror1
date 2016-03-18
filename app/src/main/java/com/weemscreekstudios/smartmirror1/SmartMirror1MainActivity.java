@@ -78,18 +78,7 @@ public class SmartMirror1MainActivity extends AppCompatActivity {
         //webview2.loadUrl("http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04"); //works
         webview2.loadUrl("file:///android_asset/openweatherapi-london-black.htm"); //load html file from asset library
 
-  /*      new CountDownTimer(30000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                textViewLastUpdateTime.setText("seconds remaining: " + millisUntilFinished / 1000);
-            }
-
-            public void onFinish() {
-                textViewNextUpdateTime.setText("done!");
-            }
-        }.start(); */
-
-         Runnable runnable = new Runnable() {
+        Runnable runnable = new Runnable() {
              @Override
              public void run() {
                  textViewLastUpdateTime.setText(String.valueOf(Counter++));
