@@ -1,9 +1,6 @@
 package com.weemscreekstudios.smartmirror1;
 
 import android.app.Activity;
-import android.net.Uri;
-import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,10 +12,6 @@ import android.widget.TextView;
 import android.os.Handler;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 
 
@@ -41,10 +34,13 @@ public class SmartMirror1MainActivity extends Activity {
     TextView textViewLastUpdateTime, textViewNextUpdateTime;
     ProgressBar timeToNextUpdateProgressBar;
 
-    Handler handler = new Handler();    //handler for timer updates
-    int Counter = 0; //counter for loop to show timer is work
+    Handler handlerURLRefresh = new Handler();    //handlerURLRefresh for URL refresh timer updates (15 minutes +)
+    Handler handlerProgressBar = new Handler();    //handler progress bar refresh timer updates (15 minutes +)
+
+    int Counter = 1; //counter for loop to show timer is work
     boolean timerFlag = false;  //flag to know if timer was activitated the first time
-    long updateInterval = 900000;   //600,000 millsec is 10 minutes, 900,000 is 15 mins.
+    long updateIntervalURLRefresh = 900000;   //600,000 millsec is 10 minutes, 900,000 is 15 mins.
+    long updateIntervalProgressBarRefresh = updateIntervalURLRefresh/100; //progress bar is 0 to 100
 
     WebView webview;
 
@@ -101,23 +97,37 @@ public class SmartMirror1MainActivity extends Activity {
         webview2.loadUrl("file:///android_asset/openweatherapi-london-black.htm"); //load html file from asset library
         Log.d(TAG, "webview2.loadUrl(file:///android_asset/openweatherapi-london-black.htm) - just happended");
 
-        Runnable runnable = new Runnable() {
+        Runnable runnableURLRefresh = new Runnable() {
              @Override
              public void run() {
-                 Log.d(TAG, "Runnable.run() - in the time function");
+                 Log.d(TAG, "RunnableURLRefresh.run() - in the time function");
                  Date dateTimeStampNow = new Date(); //initializes to current time
                  long dateTimeNowMillisec = dateTimeStampNow.getTime(); //get current time in millisecs
                  SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); //set format to AM/PM
                  textViewLastUpdateTime.setText(sdf.format(dateTimeStampNow)); //display last update time from a date
-                 textViewNextUpdateTime.setText(sdf.format(dateTimeNowMillisec+updateInterval)); //next update time
+                 textViewNextUpdateTime.setText(sdf.format(dateTimeNowMillisec + updateIntervalURLRefresh)); //next update time
                  //timeToNextUpdateProgressBar.setProgress(Counter++); //not using at the moment
                  webview.reload();  //refresh the page - API only allows once per 10 minutes
                  Log.d(TAG, "webview.reload() just happened");
-                 handler.postDelayed(this, updateInterval); //20 minutes - 1200 sec = 1,200,000 millisec
+                 Counter = 1; //reset the progress bar counter
+                 timeToNextUpdateProgressBar.setProgress(Counter);  //reset progress bar
+                 Log.d(TAG, "RunnableURLRefresh timeToNextUpdateProgressBar.setProgress(1) just happened");
+                 handlerURLRefresh.postDelayed(this, updateIntervalURLRefresh); //20 minutes - 1200 sec = 1,200,000 millisec
              }
          };
-        handler.post(runnable);
+        handlerURLRefresh.post(runnableURLRefresh);
 
+        Runnable runnableProgressBarRefresh = new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "runnableProgressBarRefresh.run() - in the time function");
+                Log.d(TAG, "updateIntervalURLRefresh ="+String.valueOf(updateIntervalProgressBarRefresh));
+                Log.d(TAG, "timeToNextUpdateProgressBar.setProgress(Counter++ just happened): Counter=" + String.valueOf(Counter));
+                timeToNextUpdateProgressBar.setProgress(Counter++);
+                handlerURLRefresh.postDelayed(this, updateIntervalProgressBarRefresh); //updateIntervalURLRefresh/100
+            }
+        };
+        handlerProgressBar.post(runnableProgressBarRefresh);
 
     }
 
