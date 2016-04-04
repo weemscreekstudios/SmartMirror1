@@ -1,27 +1,28 @@
-package com.weemscreekstudios.smartmirror1;
+package com.weemscreekstudios.smartmirror1.model;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
-import android.content.SharedPreferences;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.os.Handler;
+
+import com.weemscreekstudios.smartmirror1.JSONWeatherParser;
+import com.weemscreekstudios.smartmirror1.R;
+import com.weemscreekstudios.smartmirror1.WeatherHttpClient;
 
 import org.json.JSONException;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.weemscreekstudios.smartmirror1.model.Location;
-import com.weemscreekstudios.smartmirror1.model.Weather;
 
 
 
@@ -32,7 +33,7 @@ import com.weemscreekstudios.smartmirror1.model.Weather;
     CheltenhamOpenWeatherMapAPIHTML = HTML returned for Cheltenham, UK
  */
 
-public class SmartMirror1MainActivity extends Activity {
+public class SmartMirror1MainActivityCopy extends Activity {
 
     public String PREFS_NAME = "test";
 
@@ -60,7 +61,7 @@ public class SmartMirror1MainActivity extends Activity {
 
     WebView webview;
 
-    private static final String TAG = SmartMirror1MainActivity.class.getSimpleName(); //set tag for debug logs
+    private static final String TAG = SmartMirror1MainActivityCopy.class.getSimpleName(); //set tag for debug logs
 
 
     @Override
@@ -346,7 +347,7 @@ public class SmartMirror1MainActivity extends Activity {
             Weather weather = new Weather();
             //String data = "http://api.openweathermap.org/data/2.5/weather?q=Cheltenham&units=imperial&appid=40ccc628e578669ca8c47e31599b0d04";
             //String data = ((new WeatherHttpClient()).getWeatherData(params[0]));  //original passes array of city names
-            String data = ((new WeatherHttpClient()).getWeatherData("Cheltenham&units=imperial", getString(R.string.OpenWeatherMapBaseURL), getString(R.string.OpenWeatherMApAppIDPrefix)+getString(R.string.OpenWeatherMapAppID)));  //new single city, base url, and appID
+            String data = ((new com.weemscreekstudios.smartmirror1.WeatherHttpClient()).getWeatherData("Cheltenham&units=imperial", getString(R.string.OpenWeatherMapBaseURL), getString(R.string.OpenWeatherMApAppIDPrefix)+getString(R.string.OpenWeatherMapAppID)));  //new single city, base url, and appID
 
             System.out.println("JSONWeatherTask: data string = " + data);  //print out JSON - comes out in alphabetical order
             try {

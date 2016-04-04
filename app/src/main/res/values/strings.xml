@@ -2,8 +2,15 @@
     <string name="app_name">SmartMirror1</string>
     <string name="annapolis"><html> <head></head> <body bgcolor="505050"> "{"coord":{"lon":-0.13,"lat":51.51},"weather":[{"id":802,"main":"Clouds","description":"scattered clouds","icon":"03d"}],"base":"cmc stations","main":{"temp":276.605,"pressure":1034.33,"humidity":95,"temp_min":276.605,"temp_max":276.605,"sea_level":1044.69,"grnd_level":1034.33},"wind":{"speed":1.86,"deg":112.502},"clouds":{"all":44},"dt":1457768166,"sys":{"message":0.0086,"country":"GB","sunrise":1457763591,"sunset":1457805670},"id":2643743,"name":"London","cod":200}" </body> </html></string>
     <string name="LondonOpenWeatherMapAPI"><![CDATA[http://api.openweathermap.org/data/2.5/weather?q=London&mode=html&appid=40ccc628e578669ca8c47e31599b0d04]]></string>
+    <string name="CheltenhamOpenWeatherMapAPI"><![CDATA[http://api.openweathermap.org/data/2.5/weather?q=Cheltenham&mode=html&appid=40ccc628e578669ca8c47e31599b0d04&units=imperial]]></string>
     <string name="AnnapolisOpenWeatherMapAPI"><![CDATA[http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04]]></string>
+    <string name="CairnsJSONPlus">"{\"coord\": {\"lon\":145.77,\"lat\":-16.92}, \"weather\":[{\"id\":803,\"main\":\"Clouds\",\"description\":\"broken clouds\",\"icon\":\"04n\"}], \"base\":\"cmc stations\", \"main\":{\"temp\":293.25,\"pressure\":1019,\"humidity\":83,\"temp_min\":289.82,\"temp_max\":295.37}, \"wind\":{\"speed\":5.1,\"deg\":150}, \"clouds\":{\"all\":75}, \"rain\":{\"3h\":3}, \"dt\":1435658272, \"sys\":{\"type\":1,\"id\":8166,\"message\":0.0166,\"country\":\"AU\",\"sunrise\":1435610796,\"sunset\":1435650870}, \"id\":2172797, \"name\":\"Cairns\", \"cod\":200}"</string>
     <string name="preferenceName">SmartMirror1</string>
     <string name="loadErrorURLHTML"><html> <head></head> <body bgcolor="505050"> "So sorry, the HTML from the preference value did not load correctly" </body> </html></string>
+    <string name="OpenWeatherMapAppID">40ccc628e578669ca8c47e31599b0d04</string>
+    <string name="RomeJSONRaw">{ "coord":{"lon":12.4958,"lat":41.903}, "sys":{"country":"Italy","sunrise":1369107818,"sunset":1369160979}, "weather":[{ "id":802,"main":"Clouds","description":"scattered clouds", "icon":"03d"}], "base":"global stations", "main":{ "temp":290.38, "humidity":68, "pressure":1015, "temp_min":287.04, "temp_max":293.71}, "wind":{ "speed":1.75, "deg":290.002}, "clouds":{"all":32}, "dt":1369122932, "id":3169070, "name":"Rome", "cod":200 }</string>
+    <string name="OpenWeatherMApAppIDPrefix"><![CDATA[&appid=]]></string>
+    <string name="OpenWeatherMapBaseURL"><![CDATA[http://api.openweathermap.org/data/2.5/weather?q=]]></string>
+    <string name="OpenWeatherMapAPIImperialIUnits"><![CDATA[&units=imperial]]></string>
 </resources>
 
