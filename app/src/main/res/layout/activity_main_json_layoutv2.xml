@@ -118,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="H 90%"
+                    android:text="H 00%"
                     android:id="@+id/textViewHumidity"
                     android:layout_gravity="center_horizontal"
                     android:background="@android:color/background_dark"
@@ -129,11 +129,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="P 30.5&quot; \u2196"
+                    android:text="P 00.00&quot; \u2196"
                     android:id="@+id/textViewPressure"
                     android:textColor="@android:color/background_light"
                     android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:singleLine="true" />
             </LinearLayout>
 
         </LinearLayout>

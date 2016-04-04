@@ -98,7 +98,7 @@ public class SmartMirror1MainActivity extends Activity {
         textViewPercipitationTotal3Hrs = (TextView) findViewById(R.id.textViewPercipitationTotal3Hrs);
         textViewPressure = (TextView)findViewById(R.id.textViewPressure);
         imageViewWeatherIcon = (ImageView) findViewById(R.id.imageViewWeatherIcon);
-
+/*
         //String data = this.getString(R.string.weatherlondonHTML);   //data == html data which you want to load
         String data1 = this.getString(R.string.annapolis);   //data == html data which you want to load
         //String webViewUrl = this.getString(R.string.LondonOpenWeatherMapAPI);  //loads the openweathermap API URL
@@ -128,7 +128,7 @@ public class SmartMirror1MainActivity extends Activity {
         //webview2.loadUrl(AnnapolisAPIUrl); //works
         //webview2.loadUrl("http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04"); //works
         webview2.loadUrl("file:///android_asset/openweatherapi-london-black.htm"); //load html file from asset library
-        Log.d(TAG, "webview2.loadUrl(file:///android_asset/openweatherapi-london-black.htm) - just happended");
+        Log.d(TAG, "webview2.loadUrl(file:///android_asset/openweatherapi-london-black.htm) - just happended");  */
 
         Runnable runnableURLRefresh = new Runnable() {
              @Override
@@ -140,8 +140,10 @@ public class SmartMirror1MainActivity extends Activity {
                  textViewLastUpdateTime.setText(sdf.format(dateTimeStampNow)); //display last update time from a date
                  textViewNextUpdateTime.setText(sdf.format(dateTimeNowMillisec + updateIntervalURLRefresh)); //next update time
                  //timeToNextUpdateProgressBar.setProgress(Counter++); //not using at the moment
-                 webview.reload();  //refresh the page - API only allows once per 10 minutes
-                 Log.d(TAG, "webview.reload() just happened");
+                 //webview.reload();  //refresh the page - API only allows once per 10 minutes
+                 //Log.d(TAG, "webview.reload() just happened");
+                 JSONWeatherTask task = new JSONWeatherTask();  //retrieve the data from OpenWeatherMap API on internet
+                 task.execute(new String[]{"test"}); //city is actually hardcoded at the moment
                  Counter = 1; //reset the progress bar counter
                  timeToNextUpdateProgressBar.setProgress(Counter);  //reset progress bar
                  Log.d(TAG, "RunnableURLRefresh timeToNextUpdateProgressBar.setProgress(1) just happened");
@@ -168,6 +170,8 @@ public class SmartMirror1MainActivity extends Activity {
         String weatherJSONFullString = this.getString(R.string.CairnsJSONPlus);  //retrieve JSON with escaped quotes from string.xml
         try {
             weatherJSON = JSONWeatherParser.getWeather(weatherJSONFullString);
+            Update_Weather_Display(weatherJSON);  //update display with canned Cairns data
+            System.out.println("weatherJSON updated display with canned Cairns weather " );  //print out JSON - comes out in alphabetical order
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -242,6 +246,8 @@ public class SmartMirror1MainActivity extends Activity {
     public Drawable Get_Weather_Icon(String weatherIconName){
         //member function to help get the correct image based on the returned icon name
         Drawable iconresourceID = getResources().getDrawable(R.drawable.brokenicon, getTheme());
+        System.out.println("Get_Weather_Icon(): "+ weatherIconName);  //print out JSON - comes out in alphabetical order
+
         switch(weatherIconName){
             case "01d":{
                 iconresourceID = getResources().getDrawable(R.drawable.weather01d, getTheme());;
@@ -355,7 +361,7 @@ public class SmartMirror1MainActivity extends Activity {
                 System.out.println("JSONWeatherTask: "+ weather.currentCondition.getCondition() + ", " + weather.currentCondition.getDescr());
 
                 // Let's retrieve the icon
-                weather.iconData = ((new WeatherHttpClient()).getImage(weather.currentCondition.getIcon()));
+               // weather.iconData = ((new WeatherHttpClient()).getImage(weather.currentCondition.getIcon()));  do not retrieve the icon
 
             } catch (JSONException e) {
                 System.out.println("JSONWeatherTask: catch{}");
