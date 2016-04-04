@@ -69,7 +69,8 @@ public class SmartMirror1MainActivity extends Activity {
         Log.d(TAG, "onCreate() - resetting full screen and hiding navigation bar");
         requestWindowFeature(Window.FEATURE_NO_TITLE); //run in fulls screen mode
         //setContentView(R.layout.activity_smart_mirror1_main);  //main activity
-        setContentView(R.layout.activity_main_json_layoutv2);
+        //setContentView(R.layout.activity_main_json_layoutv2);
+        setContentView(R.layout.activity_main_json_layoutv3);
 
 
         // Hide the status bar and the navigation bar.
@@ -337,9 +338,9 @@ public class SmartMirror1MainActivity extends Activity {
         textViewSunset.setText(weather.location.getSunsetDateFormated("hh:mm aa"));  //display sunrise time formatted as above
 
         textViewPressure.setText("P " + String.valueOf(df.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");
-        textViewPercipitationTotal3Hrs.setText("∑rain " + String.valueOf(df.format(weather.rain.getAmmount()))+ "″/3hrs");
+        textViewPercipitationTotal3Hrs.setText("∑rain " + String.valueOf(df.format(weather.rain.getAmmount())) + "″/3hrs");
         System.out.println("Update_Weather_Display(): updating text fields" + "P " + String.valueOf(df.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");  //print out JSON - comes out in alphabetical order
-        System.out.println("Update_Weather_Display(): updating text fields" + "∑rain " + String.valueOf(df.format(weather.rain.getAmmount()))+ "″/3hrs");  //print out JSON - comes out in alphabetical order
+        System.out.println("Update_Weather_Display(): updating text fields" + "∑rain " + String.valueOf(df.format(weather.rain.getAmmount())) + "″/3hrs");  //print out JSON - comes out in alphabetical order
 
 
         imageViewWeatherIcon.setImageDrawable(Get_Weather_Icon(weather.currentCondition.getIcon()));
