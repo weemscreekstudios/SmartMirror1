@@ -75,8 +75,7 @@ public class SmartMirror1MainActivity extends Activity {
 
         // Hide the status bar and the navigation bar.
         View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
         PREFS_NAME = this.getString(R.string.preferenceName);  //set the PREFS_NAME at create time
@@ -330,9 +329,12 @@ public class SmartMirror1MainActivity extends Activity {
         textViewCloudPercentage.setText(String.valueOf(weather.clouds.getPerc())+ "\u0025");  //display the cloud percentage data
         textViewWindSpeed.setText("W " +String.valueOf(weather.wind.getSpeed())+ " mph\u2196");  //display the wind speed
         textViewCurrentTemp.setText(String.valueOf(weather.temperature.getTemp())+ " \u2109");  //display the more detailed descriptions
-        textViewHiTemp.setText("H "+String.valueOf(weather.temperature.getMaxTemp())+ " \u2109");  //display the more detailed descriptions
-        textViewLowTemp.setText("L "+String.valueOf(weather.temperature.getMinTemp())+ " \u2109");  //display the more detailed descriptions
+        //textViewHiTemp.setText("H "+String.valueOf(weather.temperature.getMaxTemp())+ " \u2109");  //display the more detailed descriptions
+        textViewHiTemp.setText("H --.-- \u2109");  //the json data is NOT the high and low for the day it is the range of current temperature
+        //textViewLowTemp.setText("L "+String.valueOf(weather.temperature.getMinTemp())+ " \u2109");  //display the more detailed descriptions
+        textViewLowTemp.setText("L --.-- \u2109");  //the json data is NOT the high and low for the day it is the range of current temperature
         textViewHumidity.setText("H " + String.valueOf(weather.currentCondition.getHumidity()) + "\u0025");  //display the more detailed descriptions
+
 
         textViewSunrise.setText(weather.location.getSunriseDateFormated("hh:mm aa"));  //display sunrise time formatted as above
         textViewSunset.setText(weather.location.getSunsetDateFormated("hh:mm aa"));  //display sunrise time formatted as above

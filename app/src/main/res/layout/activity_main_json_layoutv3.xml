@@ -4,8 +4,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context=".SmartMirror1MainActivity"
-    android:keepScreenOn="true">
+    android:keepScreenOn="true"
+    tools:context="com.weemscreekstudios.smartmirror1.SmartMirror1MainActivity">
 
     <TextClock
         android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
         android:elegantTextHeight="false"
         android:textSize="@dimen/abc_text_size_display_3_material"
         android:textColor="@android:color/white"
-        android:format12Hour="E MMM-dd-yyyy\nHH:mm:ss aa"
+        android:format12Hour="E MMM-dd-yyyy\nhh:mm:ss aa"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/textViewPercipitationTotal3Hrs"
