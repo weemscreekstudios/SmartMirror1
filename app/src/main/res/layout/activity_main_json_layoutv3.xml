@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_dark"
-    tools:context=".SmartMirror1MainActivity">
+    android:background="#000000"
+    tools:context=".SmartMirror1MainActivity"
+    android:keepScreenOn="true">
 
     <TextClock
         android:layout_width="wrap_content"
