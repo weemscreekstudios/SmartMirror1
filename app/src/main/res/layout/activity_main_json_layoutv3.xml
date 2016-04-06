@@ -364,13 +364,27 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom|left">
+        android:gravity="bottom|left"
+        android:weightSum="2">
 
         <ImageView
-            android:layout_width="47dp"
+            android:layout_width="0dp"
             android:layout_height="47dp"
             android:id="@+id/imageViewFaceDetectIcon"
-            android:src="@drawable/nopersonicon" />
+            android:src="@drawable/nopersonicon"
+            android:layout_weight="1"
+            android:baselineAlignBottom="false"
+            android:layout_gravity="bottom" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="V0.6-2"
+            android:id="@+id/textViewVersionNumber"
+            android:layout_weight="1"
+            android:textColor="@android:color/white"
+            android:textAlignment="textEnd" />
     </LinearLayout>
 
 </LinearLayout>

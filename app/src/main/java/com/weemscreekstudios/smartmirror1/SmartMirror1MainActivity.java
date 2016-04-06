@@ -3,6 +3,7 @@ package com.weemscreekstudios.smartmirror1;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,7 +46,7 @@ public class SmartMirror1MainActivity extends Activity {
     ProgressBar timeToNextUpdateProgressBar;
 
     TextView textViewCityName, textViewWeatherDescription, textViewCloudPercentage, textViewWindSpeed, textViewCurrentTemp, textViewHiTemp, textViewLowTemp, textViewHumidity;
-    TextView textViewSunset, textViewSunrise, textViewDataTime, textViewPercipitationTotal3Hrs, textViewPressure;
+    TextView textViewSunset, textViewSunrise, textViewDataTime, textViewPercipitationTotal3Hrs, textViewPressure, textViewVersion;
     Weather liveWeather = new Weather(); //global to hold the returned weather
     ImageView imageViewWeatherIcon;
     DecimalFormat df = new DecimalFormat("#.#");
@@ -60,10 +61,13 @@ public class SmartMirror1MainActivity extends Activity {
 
     WebView webview;
 
+    String oldJSONdata;  //place holder to store the last retrieved JSON weather data
+
     private static final String TAG = SmartMirror1MainActivity.class.getSimpleName(); //set tag for debug logs
 
+    int versionCode = BuildConfig.VERSION_CODE;
+    String versionName = BuildConfig.VERSION_NAME;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() - resetting full screen and hiding navigation bar");
@@ -71,7 +75,6 @@ public class SmartMirror1MainActivity extends Activity {
         //setContentView(R.layout.activity_smart_mirror1_main);  //main activity
         //setContentView(R.layout.activity_main_json_layoutv2);
         setContentView(R.layout.activity_main_json_layoutv3);
-
 
         // Hide the status bar and the navigation bar.
         View decorView = getWindow().getDecorView();
@@ -97,6 +100,8 @@ public class SmartMirror1MainActivity extends Activity {
         textViewDataTime = (TextView) findViewById(R.id.textViewDataTime);
         textViewPercipitationTotal3Hrs = (TextView) findViewById(R.id.textViewPercipitationTotal3Hrs);
         textViewPressure = (TextView)findViewById(R.id.textViewPressure);
+        textViewVersion = (TextView)findViewById(R.id.textViewVersionNumber);
+
         imageViewWeatherIcon = (ImageView) findViewById(R.id.imageViewWeatherIcon);
 /*
         //String data = this.getString(R.string.weatherlondonHTML);   //data == html data which you want to load
@@ -182,9 +187,7 @@ public class SmartMirror1MainActivity extends Activity {
 
 
     protected void onResme(){
-
         /*Note the following:
-
         With this approach, touching anywhere on the screen causes the navigation bar (and status bar) to reappear and remain visible.
          The user interaction causes the flags to be be cleared. Once the flags have been cleared, your app needs to reset them if you
          want to hide the bars again. See Responding to UI Visibility Changes for a discussion of how to listen for UI visibility changes
@@ -202,6 +205,24 @@ public class SmartMirror1MainActivity extends Activity {
         Log.d(TAG, "onResume() - resetting full screen and hiding navigation bar");
     }
 
+    protected void onWindowFocusChanged(){
+         /*Note the following:
+       With this approach, touching anywhere on the screen causes the navigation bar (and status bar) to reappear and remain visible.
+         The user interaction causes the flags to be be cleared. Once the flags have been cleared, your app needs to reset them if you
+         want to hide the bars again. See Responding to UI Visibility Changes for a discussion of how to listen for UI visibility changes
+          so that your app can respond accordingly. Where you set the UI flags makes a difference. If you hide the system bars in your
+          activity's onCreate() method and the user presses Home, the system bars will reappear. When the user reopens the activity, onCreate()
+          won't get called, so the system bars will remain visible. If you want system UI changes to persist as the user navigates in and out
+          of your activity, set UI flags in onResume() or onWindowFocusChanged(). /*/
+
+        // Hide the status bar and the navigation bar.
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
+        Log.d(TAG, "onWindowFocusChanged() - resetting full screen and hiding navigation bar");
+    }
     public void RestorePrefrences() {
         // Restore preferences
         Log.d(TAG, "In RestorePrefences()");
@@ -346,6 +367,8 @@ public class SmartMirror1MainActivity extends Activity {
 
 
         imageViewWeatherIcon.setImageDrawable(Get_Weather_Icon(weather.currentCondition.getIcon()));
+        System.out.println("Update_Weather_Display():" + versionName + String.valueOf(versionCode));
+        textViewVersion.setText(versionName + String.valueOf(versionCode));
     }
 
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
@@ -356,6 +379,16 @@ public class SmartMirror1MainActivity extends Activity {
             //String data = "http://api.openweathermap.org/data/2.5/weather?q=Cheltenham&units=imperial&appid=40ccc628e578669ca8c47e31599b0d04";
             //String data = ((new WeatherHttpClient()).getWeatherData(params[0]));  //original passes array of city names
             String data = ((new WeatherHttpClient()).getWeatherData("Cheltenham&units=imperial", getString(R.string.OpenWeatherMapBaseURL), getString(R.string.OpenWeatherMApAppIDPrefix)+getString(R.string.OpenWeatherMapAppID)));  //new single city, base url, and appID
+
+            if (! data.isEmpty()){
+                System.out.println("JSONWeatherTask: ! data.isEmpty()");  //print out JSON - comes out in alphabetical order
+                oldJSONdata = data;  //query was good, store json data for next time
+            }
+            else{
+                System.out.println("JSONWeatherTask: data.isEmpty()");  //print out JSON - comes out in alphabetical order
+                data = oldJSONdata;     //query was bad, reset to last known data and refresh screen
+                //do something here to change the last updated text red
+            }
 
             System.out.println("JSONWeatherTask: data string = " + data);  //print out JSON - comes out in alphabetical order
             try {
