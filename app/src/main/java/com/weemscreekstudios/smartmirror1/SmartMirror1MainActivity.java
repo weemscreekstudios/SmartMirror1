@@ -372,7 +372,7 @@ public class SmartMirror1MainActivity extends Activity {
 
         imageViewWeatherIcon.setImageDrawable(Get_Weather_Icon(weather.currentCondition.getIcon()));
         System.out.println("Update_Weather_Display():" + versionName + "-"+String.valueOf(versionCode));
-        textViewVersion.setText(versionName + String.valueOf(versionCode));
+        textViewVersion.setText(versionName + "-" + String.valueOf(versionCode));
     }
 
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
