@@ -61,7 +61,8 @@ public class SmartMirror1MainActivity extends Activity {
 
     WebView webview;
 
-    String oldJSONdata = this.getString(R.string.CairnsJSONPlus);  //retrieve JSON with escaped quotes from string.xml;  //place holder to store the last retrieved JSON weather data
+    //String oldJSONdata = this.getString(R.string.CairnsJSONPlus);  //retrieve JSON with escaped quotes from string.xml;  //place holder to store the last retrieved JSON weather data
+    String oldJSONdata;  //place holder to store the last retrieved JSON weather data
 
     private static final String TAG = SmartMirror1MainActivity.class.getSimpleName(); //set tag for debug logs
 
@@ -103,6 +104,9 @@ public class SmartMirror1MainActivity extends Activity {
         textViewVersion = (TextView)findViewById(R.id.textViewVersionNumber);
 
         imageViewWeatherIcon = (ImageView) findViewById(R.id.imageViewWeatherIcon);
+
+        oldJSONdata = this.getString(R.string.CairnsJSONPlus);  //retrieve JSON with escaped quotes from string.xml;  //place holder to store the last retrieved JSON weather data
+
 /*
         //String data = this.getString(R.string.weatherlondonHTML);   //data == html data which you want to load
         String data1 = this.getString(R.string.annapolis);   //data == html data which you want to load
@@ -367,7 +371,7 @@ public class SmartMirror1MainActivity extends Activity {
 
 
         imageViewWeatherIcon.setImageDrawable(Get_Weather_Icon(weather.currentCondition.getIcon()));
-        System.out.println("Update_Weather_Display():" + versionName + String.valueOf(versionCode));
+        System.out.println("Update_Weather_Display():" + versionName + "-"+String.valueOf(versionCode));
         textViewVersion.setText(versionName + String.valueOf(versionCode));
     }
 

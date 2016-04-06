@@ -380,11 +380,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="V0.6-2"
+            android:text="V#.##-#"
             android:id="@+id/textViewVersionNumber"
             android:layout_weight="1"
             android:textColor="@android:color/white"
-            android:textAlignment="textEnd" />
+            android:textAlignment="textEnd"
+            android:singleLine="true" />
     </LinearLayout>
 
 </LinearLayout>
