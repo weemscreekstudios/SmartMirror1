@@ -61,7 +61,7 @@ public class SmartMirror1MainActivity extends Activity {
 
     WebView webview;
 
-    String oldJSONdata;  //place holder to store the last retrieved JSON weather data
+    String oldJSONdata = this.getString(R.string.CairnsJSONPlus);  //retrieve JSON with escaped quotes from string.xml;  //place holder to store the last retrieved JSON weather data
 
     private static final String TAG = SmartMirror1MainActivity.class.getSimpleName(); //set tag for debug logs
 
@@ -376,7 +376,6 @@ public class SmartMirror1MainActivity extends Activity {
         @Override
         protected Weather doInBackground(String... params) {
             Weather weather = new Weather();
-            //String data = "http://api.openweathermap.org/data/2.5/weather?q=Cheltenham&units=imperial&appid=40ccc628e578669ca8c47e31599b0d04";
             //String data = ((new WeatherHttpClient()).getWeatherData(params[0]));  //original passes array of city names
             String data = ((new WeatherHttpClient()).getWeatherData("Cheltenham&units=imperial", getString(R.string.OpenWeatherMapBaseURL), getString(R.string.OpenWeatherMApAppIDPrefix)+getString(R.string.OpenWeatherMapAppID)));  //new single city, base url, and appID
 
