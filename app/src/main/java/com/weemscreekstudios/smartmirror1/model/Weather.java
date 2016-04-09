@@ -35,10 +35,15 @@ public class Weather {
 	public Rain rain = new Rain();
 	public Snow snow = new Snow()	;
 	public Clouds clouds = new Clouds();
+	public long dt;
 
 	
 	public byte[] iconData;
-	
+
+	public void setdt(long dtIn) {dt = dtIn;  }
+	public long getdt() {return dt;}
+
+
 	public  class CurrentCondition {
 		private int weatherId;
 		private String condition;
@@ -91,8 +96,7 @@ public class Weather {
 		public void setHumidity(float humidity) {
 			this.humidity = humidity;
 		}
-		/*public void setDt(long dt) {this.dt = dt;  }*/
-		
+
 		
 	}
 	

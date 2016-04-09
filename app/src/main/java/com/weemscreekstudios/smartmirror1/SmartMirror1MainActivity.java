@@ -21,6 +21,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.google.gson.Gson;
 import com.weemscreekstudios.smartmirror1.model.Location;
 import com.weemscreekstudios.smartmirror1.model.Weather;
 
@@ -64,6 +65,7 @@ public class SmartMirror1MainActivity extends Activity {
     //String oldJSONdata = this.getString(R.string.CairnsJSONPlus);  //retrieve JSON with escaped quotes from string.xml;  //place holder to store the last retrieved JSON weather data
     String oldJSONdata;  //place holder to store the last retrieved JSON weather data
 
+
     private static final String TAG = SmartMirror1MainActivity.class.getSimpleName(); //set tag for debug logs
 
     int versionCode = BuildConfig.VERSION_CODE;
@@ -106,38 +108,6 @@ public class SmartMirror1MainActivity extends Activity {
         imageViewWeatherIcon = (ImageView) findViewById(R.id.imageViewWeatherIcon);
 
         oldJSONdata = this.getString(R.string.CairnsJSONPlus);  //retrieve JSON with escaped quotes from string.xml;  //place holder to store the last retrieved JSON weather data
-
-/*
-        //String data = this.getString(R.string.weatherlondonHTML);   //data == html data which you want to load
-        String data1 = this.getString(R.string.annapolis);   //data == html data which you want to load
-        //String webViewUrl = this.getString(R.string.LondonOpenWeatherMapAPI);  //loads the openweathermap API URL
-        String webViewIUrl = this.getString(R.string.CheltenhamOpenWeatherMapAPI);  //loads the openweathermap API URL
-
-        webview = (WebView) this.findViewById(R.id.webView);
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.setInitialScale(400);
-       // webview.loadData(data1, "text/html", "UTF-8"); this loads from a string
-        //webview.loadUrl("file:///android_asset/openweatherapi-annapolis-black.htm"); //load html file from asset library - works
-        webview.loadUrl(webViewIUrl); //works
-        Log.d(TAG, "webview.loadUrl(webViewIUrl) just happened");
-
-        String AnnapolisAPIUrl = this.getString(R.string.AnnapolisOpenWeatherMapAPI);
-
-        WebView webview2 = (WebView) this.findViewById(R.id.webView2);
-        webview2.getSettings().setJavaScriptEnabled(true);
-        //webview2.getSettings().setUseWideViewPort(true);
-        //webview2.getSettings().setLoadWithOverviewMode(true);
-        //webview2.getSettings().setBuiltInZoomControls(true);
-        //webview2.zoomBy(100.0f);
-        webview2.setInitialScale(400);
-        //webview2.setScaleX(1.0f);
-        //webview2.setScaleY(1.0f);
-        //webview2.zoomBy(90.0f);
-
-        //webview2.loadUrl(AnnapolisAPIUrl); //works
-        //webview2.loadUrl("http://api.openweathermap.org/data/2.5/weather?q=Annapolis&mode=html&appid=40ccc628e578669ca8c47e31599b0d04"); //works
-        webview2.loadUrl("file:///android_asset/openweatherapi-london-black.htm"); //load html file from asset library
-        Log.d(TAG, "webview2.loadUrl(file:///android_asset/openweatherapi-london-black.htm) - just happended");  */
 
         Runnable runnableURLRefresh = new Runnable() {
              @Override
@@ -354,10 +324,10 @@ public class SmartMirror1MainActivity extends Activity {
         textViewCloudPercentage.setText(String.valueOf(weather.clouds.getPerc())+ "\u0025");  //display the cloud percentage data
         textViewWindSpeed.setText("W " +String.valueOf(weather.wind.getSpeed())+ " mph\u2196");  //display the wind speed
         textViewCurrentTemp.setText(String.valueOf(weather.temperature.getTemp())+ " \u2109");  //display the more detailed descriptions
-        //textViewHiTemp.setText("H "+String.valueOf(weather.temperature.getMaxTemp())+ " \u2109");  //display the more detailed descriptions
-        textViewHiTemp.setText("H --.-- \u2109");  //the json data is NOT the high and low for the day it is the range of current temperature
-        //textViewLowTemp.setText("L "+String.valueOf(weather.temperature.getMinTemp())+ " \u2109");  //display the more detailed descriptions
-        textViewLowTemp.setText("L --.-- \u2109");  //the json data is NOT the high and low for the day it is the range of current temperature
+        textViewHiTemp.setText("H "+String.valueOf(weather.temperature.getMaxTemp())+ " \u2109");  //display the more detailed descriptions
+        //textViewHiTemp.setText("H --.-- \u2109");  //the json data is NOT the high and low for the day it is the range of current temperature
+        textViewLowTemp.setText("L "+String.valueOf(weather.temperature.getMinTemp())+ " \u2109");  //display the more detailed descriptions
+        //textViewLowTemp.setText("L --.-- \u2109");  //the json data is NOT the high and low for the day it is the range of current temperature
         textViewHumidity.setText("H " + String.valueOf(weather.currentCondition.getHumidity()) + "\u0025");  //display the more detailed descriptions
 
 
@@ -371,23 +341,33 @@ public class SmartMirror1MainActivity extends Activity {
 
 
         imageViewWeatherIcon.setImageDrawable(Get_Weather_Icon(weather.currentCondition.getIcon()));
-        System.out.println("Update_Weather_Display():" + versionName + "-"+String.valueOf(versionCode));
+        System.out.println("Update_Weather_Display():" + versionName + "-" + String.valueOf(versionCode));
         textViewVersion.setText(versionName + "-" + String.valueOf(versionCode));
+
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aa"); //set format to AM/PM
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); //set format to AM/PM
+        String dataupdatetime = String.valueOf(sdf.format(weather.getdt()*1000+3600));
+        System.out.println("Update_Weather_Display(): textViewDataTime.setText() with "+String.valueOf(weather.getdt()));
+        System.out.println("Update_Weather_Display():" + dataupdatetime);
+        textViewDataTime.setText(dataupdatetime);
+
+
     }
 
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
 
         @Override
         protected Weather doInBackground(String... params) {
+
+
             Weather weather = new Weather();
             //String data = ((new WeatherHttpClient()).getWeatherData(params[0]));  //original passes array of city names
-            String data = ((new WeatherHttpClient()).getWeatherData("Cheltenham&units=imperial", getString(R.string.OpenWeatherMapBaseURL), getString(R.string.OpenWeatherMApAppIDPrefix)+getString(R.string.OpenWeatherMapAppID)));  //new single city, base url, and appID
+            String data = ((new WeatherHttpClient()).getWeatherData("Cheltenham&units=imperial", getString(R.string.OpenWeatherMapBaseURL), getString(R.string.OpenWeatherMApAppIDPrefix) + getString(R.string.OpenWeatherMapAppID)));  //new single city, base url, and appID
 
-            if (! data.isEmpty()){
+            if (!data.isEmpty()) {
                 System.out.println("JSONWeatherTask: ! data.isEmpty()");  //print out JSON - comes out in alphabetical order
                 oldJSONdata = data;  //query was good, store json data for next time
-            }
-            else{
+            } else {
                 System.out.println("JSONWeatherTask: data.isEmpty()");  //print out JSON - comes out in alphabetical order
                 data = oldJSONdata;     //query was bad, reset to last known data and refresh screen
                 //do something here to change the last updated text red
@@ -397,10 +377,20 @@ public class SmartMirror1MainActivity extends Activity {
             try {
                 System.out.println("JSONWeatherTask: try{}");
                 weather = JSONWeatherParser.getWeather(data);
-                System.out.println("JSONWeatherTask: "+ weather.currentCondition.getCondition() + ", " + weather.currentCondition.getDescr());
+                System.out.println("JSONWeatherTask: " + weather.currentCondition.getCondition() + ", " + weather.currentCondition.getDescr());
 
                 // Let's retrieve the icon
-               // weather.iconData = ((new WeatherHttpClient()).getImage(weather.currentCondition.getIcon()));  do not retrieve the icon
+                // weather.iconData = ((new WeatherHttpClient()).getImage(weather.currentCondition.getIcon()));  do not retrieve the icon
+
+
+                System.out.println("JSONWeatherTask: checking out GSON to parse returned json object");
+                //deserialize from weatherJSON string to object
+                Weather weatherFromGSON = new Weather();  //create new weather data object
+                Gson weatherGson = new Gson();  //create new Gson object
+                System.out.println("JSONWeatherTask: weatherGson.fromJson(data, Weather.class)");
+                weatherFromGSON = weatherGson.fromJson(data, Weather.class); //deserialize to object from JSON string
+                System.out.println("JSONWeatherTask: weatherFromGSON.dt = " + String.valueOf(weatherFromGSON.getdt()));
+                weather.setdt(weatherFromGSON.getdt()); //set the data time from one parser to the other, which doesn't have a parser
 
             } catch (JSONException e) {
                 System.out.println("JSONWeatherTask: catch{}");
