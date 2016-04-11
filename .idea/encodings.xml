@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/weemscreekstudios/smartmirror1/JSONWeatherParser.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/weemscreekstudios/smartmirror1/WeatherHttpClient.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/weemscreekstudios/smartmirror1/apiFixerIOJSON/apiFixerIOBase.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/weemscreekstudios/smartmirror1/apiFixerIOJSON/apiFixerIORates.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/weemscreekstudios/smartmirror1/model/Location.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/weemscreekstudios/smartmirror1/model/Weather.java" charset="windows-1252" />
     <file url="PROJECT" charset="UTF-8" />

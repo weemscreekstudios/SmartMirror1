@@ -318,7 +318,7 @@ public class SmartMirror1MainActivityCopy extends Activity {
 
     //updates the activity with the weather data
     public void Update_Weather_Display(Weather weather){
-        System.out.println("Update_Weather_Display(): updating text fields");  //print out JSON - comes out in alphabetical order
+        System.out.println("Update_Display(): updating text fields");  //print out JSON - comes out in alphabetical order
         textViewCityName.setText(weather.location.getCity());  //display city name
         textViewWeatherDescription.setText(weather.currentCondition.getCondition() + ", " + weather.currentCondition.getDescr());  //display the more detailed descriptions
         textViewCloudPercentage.setText(String.valueOf(weather.clouds.getPerc())+ "\u0025");  //display the cloud percentage data
@@ -333,8 +333,8 @@ public class SmartMirror1MainActivityCopy extends Activity {
 
         textViewPressure.setText("P " + String.valueOf(df.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");
         textViewPercipitationTotal3Hrs.setText("∑rain " + String.valueOf(df.format(weather.rain.getAmmount()))+ "″/3hrs");
-        System.out.println("Update_Weather_Display(): updating text fields" + "P " + String.valueOf(df.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");  //print out JSON - comes out in alphabetical order
-        System.out.println("Update_Weather_Display(): updating text fields" + "∑rain " + String.valueOf(df.format(weather.rain.getAmmount()))+ "″/3hrs");  //print out JSON - comes out in alphabetical order
+        System.out.println("Update_Display(): updating text fields" + "P " + String.valueOf(df.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");  //print out JSON - comes out in alphabetical order
+        System.out.println("Update_Display(): updating text fields" + "∑rain " + String.valueOf(df.format(weather.rain.getAmmount()))+ "″/3hrs");  //print out JSON - comes out in alphabetical order
 
 
         imageViewWeatherIcon.setImageDrawable(Get_Weather_Icon(weather.currentCondition.getIcon()));
