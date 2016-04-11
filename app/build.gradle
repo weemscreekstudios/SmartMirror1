@@ -8,7 +8,7 @@ android {
         applicationId "com.weemscreekstudios.smartmirror1"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 3
+        versionCode 4
         versionName "0.60"
     }
     buildTypes {
