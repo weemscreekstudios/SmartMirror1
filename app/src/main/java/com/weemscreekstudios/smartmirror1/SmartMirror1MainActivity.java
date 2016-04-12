@@ -390,9 +390,14 @@ public class SmartMirror1MainActivity extends Activity {
     public void Update_Display(){
         System.out.println("Update_Display()");
 
+        DecimalFormat df = new DecimalFormat("#.0000");
+
         //update currency info
-        textViewEuroDollars.setText(String.valueOf(String.valueOf(apiCurrencyExchangeData.rates.getUSD())));
-        textViewGBPDollars.setText(String.valueOf(String.valueOf(apiCurrencyExchangeData.rates.getGBP())));
+        //textViewEuroDollars.setText(String.valueOf(String.valueOf(1.0f/apiCurrencyExchangeData.rates.getEUR())));
+        //textViewGBPDollars.setText(String.valueOf(String.valueOf(1.0f/apiCurrencyExchangeData.rates.getGBP())));
+
+        textViewEuroDollars.setText(String.valueOf(df.format(1.0f/apiCurrencyExchangeData.rates.getEUR())));
+        textViewGBPDollars.setText(String.valueOf(df.format(1.0f/apiCurrencyExchangeData.rates.getGBP())));
 
     }
 
@@ -495,7 +500,8 @@ public class SmartMirror1MainActivity extends Activity {
             System.out.println("URLJSON_OnClick(): Good network connectivity");
             DownloadExchangeJSONTask webpageTask = new DownloadExchangeJSONTask(); //get ready to download exchange data
             //string for apiFixer
-            String apiFixerURL = "http://api.fixer.io/latest?symbols=USD,GBP";
+            //String apiFixerURL = "http://api.fixer.io/latest?symbols=USD,GBP";
+            String apiFixerURL = "http://api.fixer.io/latest?base=USD";
             webpageTask.execute(apiFixerURL);
             System.out.println("URLJSON_OnClick(): webpageTask.execute(apiFixerURL) was initiated");
         }
