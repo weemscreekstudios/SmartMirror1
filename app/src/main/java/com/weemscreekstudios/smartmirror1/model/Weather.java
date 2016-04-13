@@ -84,7 +84,7 @@ public class Weather {
 			return pressure;
 		}
 		public float getPressureImperial() {
-			float pressureImp = pressure/38.63886666718317f;
+			float pressureImp = pressure/33.8638866667f;
 			return pressureImp;
 		}
 		public void setPressure(float pressure) {

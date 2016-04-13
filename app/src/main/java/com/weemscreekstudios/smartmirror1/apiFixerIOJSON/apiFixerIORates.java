@@ -9,20 +9,14 @@ package com.weemscreekstudios.smartmirror1.apiFixerIOJSON;
  * "JPY":110.38,"KRW":1163.0,"MXN":17.774,"MYR":3.9397,"NOK":8.3592,"NZD":1.4736,"PHP":46.274,"PLN":3.7611,"RON":3.9419,
  * "RUB":68.636,"SEK":8.1711,"SGD":1.3561,"THB":35.295,"TRY":2.8531,"ZAR":15.244,"EUR":0.88215}}
  *
- * /*
- * {
- *      "base":"EUR",
-        "date":"2016-04-07",
-        "rates":{
-            "GBP":0.80728,
-            "USD":1.1364
-            }
-        }*/
+ */
+
 
 public class apiFixerIORates {
 
     private float GBP;
     private float USD;
+    private float EUR;
 
 
     public float getGBP() {
@@ -35,8 +29,13 @@ public class apiFixerIORates {
         this.USD= USDIn;
     }
 
+    public float getEUR(){return EUR;}
+    public void setEUR(float EURIn ) {
+        this.EUR= EURIn;
+    }
+
     @Override
     public String toString(){
-        return "GBP="+ String.valueOf(getGBP()) + ", USD="+String.valueOf(getUSD());
+        return "GBP="+ String.valueOf(getGBP()) + ", EUR="+String.valueOf(getEUR());
     }
 }

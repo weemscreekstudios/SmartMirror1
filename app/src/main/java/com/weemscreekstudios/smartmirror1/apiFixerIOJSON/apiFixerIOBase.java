@@ -63,7 +63,7 @@ public class apiFixerIOBase implements Serializable {
         this.base = "ZZZ";
         this.date = "99 Jan 9999 11:11 AM";
         this.rates.setGBP(9.9999f);
-        this.rates.setUSD(8.8888f);
+        this.rates.setEUR(8.8888f);
     }
 
 }

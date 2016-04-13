@@ -58,6 +58,7 @@ public class SmartMirror1MainActivity extends Activity {
     Weather liveWeather = new Weather(); //global to hold the returned weather
     ImageView imageViewWeatherIcon;
     DecimalFormat df = new DecimalFormat("#.#");
+    DecimalFormat dfXX = new DecimalFormat("#.##");
 
     Handler handlerURLRefresh = new Handler();    //handlerURLRefresh for URL refresh timer updates (15 minutes +)
     Handler handlerProgressBar = new Handler();    //handler progress bar refresh timer updates (15 minutes +)
@@ -357,7 +358,7 @@ public class SmartMirror1MainActivity extends Activity {
 
         textViewPressure.setText("P " + String.valueOf(df.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");
         textViewPercipitationTotal3Hrs.setText("∑rain " + String.valueOf(df.format(weather.rain.getAmmount())) + "″/3hrs");
-        System.out.println("Update_Display(): updating text fields" + "P " + String.valueOf(df.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");  //print out JSON - comes out in alphabetical order
+        System.out.println("Update_Display(): updating text fields" + "P " + String.valueOf(dfXX.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");  //print out JSON - comes out in alphabetical order
         System.out.println("Update_Display(): updating text fields" + "∑rain " + String.valueOf(df.format(weather.rain.getAmmount())) + "″/3hrs");  //print out JSON - comes out in alphabetical order
 
 

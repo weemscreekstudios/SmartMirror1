@@ -8,13 +8,13 @@
     tools:context="com.weemscreekstudios.smartmirror1.SmartMirror1MainActivity">
 
     <TextClock
-        android:layout_width="wrap_content"
+        android:layout_width="576dp"
         android:layout_height="wrap_content"
         android:id="@+id/textClock"
         android:elegantTextHeight="false"
         android:textSize="@dimen/abc_text_size_display_2_material"
         android:textColor="@android:color/white"
-        android:format12Hour="E MMM-dd-yyyy\nhh:mm:ss aa"
+        android:format12Hour="E h:mm:ss aa MMM-dd-yyyy "
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/textViewPercipitationTotal3Hrs"
