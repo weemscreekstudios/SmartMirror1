@@ -4,8 +4,8 @@ package com.weemscreekstudios.smartmirror1.FiveDayForecastJSON;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
-import com.weemscreekstudios.currencyexchangegson.FiveDayForecastJSON.city.city;
-import com.weemscreekstudios.currencyexchangegson.FiveDayForecastJSON.list.list;
+import com.weemscreekstudios.smartmirror1.FiveDayForecastJSON.city.city;
+import com.weemscreekstudios.smartmirror1.FiveDayForecastJSON.list.list;
 
 import java.io.Serializable;
 
