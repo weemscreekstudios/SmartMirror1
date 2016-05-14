@@ -18,7 +18,7 @@ public class openWeatherMapAPI5DayForcast implements Serializable {
     @SerializedName("cod")   public int cod;
     public float message;
     public int cnt;
-    list[] list;
+    public list[] list;
 
     public int getCod() {
         return cod;

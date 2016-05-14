@@ -22,5 +22,8 @@ public  class rain {
         sb.append("rain.3h="+String.valueOf(threeHours));
         return sb.toString();
     }
-
+    public String toString3Hr(){
+        String.valueOf(threeHours);
+        return String.valueOf(threeHours);
+    }
 }

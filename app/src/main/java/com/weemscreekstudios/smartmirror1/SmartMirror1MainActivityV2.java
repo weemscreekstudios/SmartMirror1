@@ -1,4 +1,4 @@
-package com.weemscreekstudios.smartmirror1.model;
+package com.weemscreekstudios.smartmirror1;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,12 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.weemscreekstudios.smartmirror1.BuildConfig;
-import com.weemscreekstudios.smartmirror1.JSONWeatherParser;
 import com.weemscreekstudios.smartmirror1.JSON_HTTP_Retrieval.JSON_HTTP_Retrieval;
-import com.weemscreekstudios.smartmirror1.R;
-import com.weemscreekstudios.smartmirror1.WeatherHttpClient;
 import com.weemscreekstudios.smartmirror1.apiFixerIOJSON.apiFixerIOBase;
+import com.weemscreekstudios.smartmirror1.FiveDayForecastJSON.openWeatherMapAPI5DayForcast;
+import com.weemscreekstudios.smartmirror1.model.Weather;
 
 import org.json.JSONException;
 
@@ -57,6 +55,8 @@ public class SmartMirror1MainActivityV2 extends Activity {
     TextView textViewSunset, textViewSunrise, textViewDataTime, textViewPercipitationTotal3Hrs, textViewPressure, textViewVersion, textViewNetConnectStatus;
     TextView textViewGBPDollars, textViewEuroDollars;
 
+    TextView[][] textViewWeatherForecast = new TextView[5][6];
+
     Weather liveWeather = new Weather(); //global to hold the returned weather
     ImageView imageViewWeatherIcon;
     DecimalFormat df = new DecimalFormat("#.#");
@@ -85,16 +85,18 @@ public class SmartMirror1MainActivityV2 extends Activity {
     boolean netConnectStatus = false; //false = no network connection
 
     apiFixerIOBase apiCurrencyExchangeData = new apiFixerIOBase();  //object to store the currency exchange ratees
-     JSON_HTTP_Retrieval exchangeData = new JSON_HTTP_Retrieval();   //object to handle retrieving the information from the internet
+    JSON_HTTP_Retrieval exchangeData = new JSON_HTTP_Retrieval();   //object to handle retrieving the information from the internet
+
+    openWeatherMapAPI5DayForcast FiveDayForecastData = new openWeatherMapAPI5DayForcast();
+    JSON_HTTP_Retrieval FiveDayWeatherData = new JSON_HTTP_Retrieval();      //object to handle retrieving the information from the internet
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() - resetting full screen and hiding navigation bar");
         requestWindowFeature(Window.FEATURE_NO_TITLE); //run in fulls screen mode
-        //setContentView(R.layout.activity_smart_mirror1_main);  //main activity
-        //setContentView(R.layout.activity_main_json_layoutv2);
-        //setContentView(R.layout.activity_main_json_layoutv3);
-        setContentView(R.layout.activity_main_json_layoutv4);
+        //setContentView(R.layout.activity_main_json_layoutv4);
+        setContentView(R.layout.activity_main_json_layoutv5_draft);
 
         // Hide the status bar and the navigation bar.
         View decorView = getWindow().getDecorView();
@@ -108,21 +110,49 @@ public class SmartMirror1MainActivityV2 extends Activity {
         timeToNextUpdateProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         textViewCityName = (TextView) findViewById(R.id.textViewCityName);
-        textViewWeatherDescription = (TextView) findViewById(R.id.textViewWeatherDescription);
-        textViewCloudPercentage = (TextView) findViewById(R.id.textViewCloudPercentage);
-        textViewWindSpeed = (TextView)findViewById(R.id.textViewWindSpeed);
         textViewCurrentTemp = (TextView) findViewById(R.id.textViewCurrentTemp);
-        textViewHiTemp = (TextView) findViewById(R.id.textViewHiTemp);
-        textViewLowTemp = (TextView) findViewById(R.id.textViewLowTemp);
         textViewSunrise = (TextView) findViewById(R.id.textViewSunrise);
         textViewSunset = (TextView) findViewById(R.id.textViewSunset);
-        textViewHumidity = (TextView) findViewById(R.id.textViewHumidity);
         textViewDataTime = (TextView) findViewById(R.id.textViewDataTime);
         textViewPercipitationTotal3Hrs = (TextView) findViewById(R.id.textViewPercipitationTotal3Hrs);
-        textViewPressure = (TextView)findViewById(R.id.textViewPressure);
         textViewVersion = (TextView)findViewById(R.id.textViewVersionNumber);
         textViewNetConnectStatus = (TextView) findViewById(R.id.textViewNetConnectStatus);
         imageViewWeatherIcon = (ImageView) findViewById(R.id.imageViewWeatherIcon);
+
+        textViewWeatherForecast[0][0] = (TextView)findViewById(R.id.textView12);  //current time
+        textViewWeatherForecast[0][1] = (TextView)findViewById(R.id.textView23);  //current 'F (temperature)
+        textViewWeatherForecast[0][2] = (TextView)findViewById(R.id.textView24);  //current W (wind)
+        textViewWeatherForecast[0][3] = (TextView)findViewById(R.id.textView25);  //current H (humidity)
+        textViewWeatherForecast[0][4] = (TextView)findViewById(R.id.textView26);  //current C (clouds)
+        textViewWeatherForecast[0][5] = (TextView)findViewById(R.id.textViewWeatherDescription);  //current Conditions
+
+        textViewWeatherForecast[1][0] = (TextView)findViewById(R.id.textView13);  //+3H time
+        textViewWeatherForecast[1][1] = (TextView)findViewById(R.id.textView28);  //+3H  'F (temperature)
+        textViewWeatherForecast[1][2] = (TextView)findViewById(R.id.textView29);  //+3H  W (wind)
+        textViewWeatherForecast[1][3] = (TextView)findViewById(R.id.textView30);  //+3H  H (humidity)
+        textViewWeatherForecast[1][4] = (TextView)findViewById(R.id.textView31);  //+3H  C (clouds)
+        textViewWeatherForecast[1][5] = (TextView)findViewById(R.id.textView32);  //+3H  Conditions
+
+        textViewWeatherForecast[2][0] = (TextView)findViewById(R.id.textView14);  //+6H  time
+        textViewWeatherForecast[2][1] = (TextView)findViewById(R.id.textView33);  //+6H  'F (temperature)
+        textViewWeatherForecast[2][2] = (TextView)findViewById(R.id.textView34);  //+6H  W (wind)
+        textViewWeatherForecast[2][3] = (TextView)findViewById(R.id.textView35);  //+6H  H (humidity)
+        textViewWeatherForecast[2][4] = (TextView)findViewById(R.id.textView36);  //+6H  C (clouds)
+        textViewWeatherForecast[2][5] = (TextView)findViewById(R.id.textView37);  //+6H  Conditions
+
+        textViewWeatherForecast[3][0] = (TextView)findViewById(R.id.textView15);  //+9H  time
+        textViewWeatherForecast[3][1] = (TextView)findViewById(R.id.textView38);  //+9H 'F (temperature)
+        textViewWeatherForecast[3][2] = (TextView)findViewById(R.id.textView39);  //+9H W (wind)
+        textViewWeatherForecast[3][3] = (TextView)findViewById(R.id.textView40);  //+9H  H (humidity)
+        textViewWeatherForecast[3][4] = (TextView)findViewById(R.id.textView41);  //+9H  C (clouds)
+        textViewWeatherForecast[3][5] = (TextView)findViewById(R.id.textView42);  //+9H  Conditions
+
+        textViewWeatherForecast[4][0] = (TextView)findViewById(R.id.textView16);  //+12H  time
+        textViewWeatherForecast[4][1] = (TextView)findViewById(R.id.textView43);  //+12H 'F (temperature)
+        textViewWeatherForecast[4][2] = (TextView)findViewById(R.id.textView44);  //+12H W (wind)
+        textViewWeatherForecast[4][3] = (TextView)findViewById(R.id.textView45);  //+12H  H (humidity)
+        textViewWeatherForecast[4][4] = (TextView)findViewById(R.id.textView46);  //+12H  C (clouds)
+        textViewWeatherForecast[4][5] = (TextView)findViewById(R.id.textView47);  //+12H  Conditions
 
         textViewGBPDollars = (TextView) findViewById(R.id.textViewGBPDollars);
         textViewEuroDollars = (TextView) findViewById(R.id.textViewEuroDollars);
@@ -130,9 +160,10 @@ public class SmartMirror1MainActivityV2 extends Activity {
         exchangeData.setContext(this);
         apiCurrencyExchangeData.apiFixerDeserializer(exchangeData.LoadDataFromAssets("apiexchangedata.txt"));//get default exchange data to display from assets file
 
-        oldJSONdata = this.getString(R.string.CairnsJSONPlus);  //retrieve JSON with escaped quotes from string.xml;  //place holder to store the last retrieved JSON weather data
+        FiveDayWeatherData.setContext(this);
 
-        Runnable runnableURLRefresh = new Runnable() {
+
+        Runnable runnableURLRefresh = new Runnable() { //update weather data
              @Override
              public void run() {
                  Log.d(TAG, "RunnableURLRefresh.run() - in the time function");
@@ -141,16 +172,18 @@ public class SmartMirror1MainActivityV2 extends Activity {
                  SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa"); //set format to AM/PM
                  textViewLastUpdateTime.setText(sdf.format(dateTimeStampNow)); //display last update time from a date
                  textViewNextUpdateTime.setText(sdf.format(dateTimeNowMillisec + updateIntervalURLRefresh)); //next update time
-                 //timeToNextUpdateProgressBar.setProgress(Counter++); //not using at the moment
-                 //webview.reload();  //refresh the page - API only allows once per 10 minutes
-                 //Log.d(TAG, "webview.reload() just happened");
                  JSONWeatherTask task = new JSONWeatherTask();  //retrieve the data from OpenWeatherMap API on internet
                  task.execute(new String[]{"test"}); //city is actually hardcoded at the moment
                  Counter = 1; //reset the progress bar counter
                  timeToNextUpdateProgressBar.setProgress(Counter);  //reset progress bar
                  Log.d(TAG, "RunnableURLRefresh timeToNextUpdateProgressBar.setProgress(1) just happened");
+
                  RetrieveExchangeData();  //get the currency exchange data
                  System.out.println("RunnableURLRefresh RetrieveExchangeData() just happened" );  //print out JSON - comes out in alphabetical order
+
+                 RetrieveFiveDayWeatherForecastData(); //get the forecast from OpenWeatherMapAIP
+                 System.out.println("RunnableURLRefresh RetrieveFiveDayWeatherForecastData() just happened" );  //print out JSON - comes out in alphabetical order
+
                  handlerURLRefresh.postDelayed(this, updateIntervalURLRefresh); //20 minutes - 1200 sec = 1,200,000 millisec
              }
          };
@@ -158,7 +191,7 @@ public class SmartMirror1MainActivityV2 extends Activity {
 
         Runnable runnableProgressBarRefresh = new Runnable() {
             @Override
-            public void run() {
+            public void run() {    //update progress bar
                 Log.d(TAG, "runnableProgressBarRefresh.run() - in the time function");
                 Log.d(TAG, "updateIntervalURLRefresh ="+String.valueOf(updateIntervalProgressBarRefresh));
                 Log.d(TAG, "timeToNextUpdateProgressBar.setProgress(Counter++ just happened): Counter=" + String.valueOf(Counter));
@@ -167,20 +200,6 @@ public class SmartMirror1MainActivityV2 extends Activity {
             }
         };
         handlerProgressBar.post(runnableProgressBarRefresh);
-
-        //read in JSON data from string.xml that has been modifed to escape the quotation marks
-        //pare the JSON download
-        String weatherJSONFullString = this.getString(R.string.CairnsJSONPlus);  //retrieve JSON with escaped quotes from string.xml
-        try {
-            weatherJSON = JSONWeatherParser.getWeather(weatherJSONFullString);
-            Update_Display(weatherJSON);  //update display with canned Cairns data
-            System.out.println("weatherJSON updated display with canned Cairns weather " );  //print out JSON - comes out in alphabetical order
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println("weatherJSONFullString.getDescr(): " + weatherJSON.currentCondition.getDescr() + ", temp = " + String.valueOf(weatherJSON.temperature.getTemp()));  //print out JSON - comes out in alphabetical order
-
-
     }
 
 
@@ -254,13 +273,6 @@ public class SmartMirror1MainActivityV2 extends Activity {
 
     }
 
-    public void Update_Weather_OnClick(View v){
-        //handle the buttonUpdateWeather Clicks
-        System.out.println("Update_Weather_OnClick");  //print out JSON - comes out in alphabetical order
-        JSONWeatherTask task = new JSONWeatherTask();
-        task.execute(new String[]{"test"}); //city is acutally hardcoded at the moment
-        System.out.println("Update_Weather_OnClick: task.execute(new String[]{\"test\"})");  //print out JSON - comes out in alphabetical order
-    }
 
     public Drawable Get_Weather_Icon(String weatherIconName){
         //member function to help get the correct image based on the returned icon name
@@ -341,30 +353,15 @@ public class SmartMirror1MainActivityV2 extends Activity {
 
 
     //updates the activity with the weather data
-    public void Update_Display(Weather weather){
+    public void Update_Current_Weather_Display(Weather weather){
         System.out.println("Update_Display(): updating text fields");  //print out JSON - comes out in alphabetical order
-        textViewCityName.setText(weather.location.getCity());  //display city name
-        textViewWeatherDescription.setText(weather.currentCondition.getCondition() + ", " + weather.currentCondition.getDescr());  //display the more detailed descriptions
-        textViewCloudPercentage.setText(String.valueOf(weather.clouds.getPerc())+ "\u0025");  //display the cloud percentage data
-        textViewWindSpeed.setText("W " +String.valueOf(weather.wind.getSpeed())+ " mph\u2196");  //display the wind speed
-        textViewCurrentTemp.setText(String.valueOf(weather.temperature.getTemp())+ " \u2109");  //display the more detailed descriptions
-        textViewHiTemp.setText("H "+String.valueOf(weather.temperature.getMaxTemp())+ " \u2109");  //display the more detailed descriptions
-        //textViewHiTemp.setText("H --.-- \u2109");  //the json data is NOT the high and low for the day it is the range of current temperature
-        textViewLowTemp.setText("L "+String.valueOf(weather.temperature.getMinTemp())+ " \u2109");  //display the more detailed descriptions
-        //textViewLowTemp.setText("L --.-- \u2109");  //the json data is NOT the high and low for the day it is the range of current temperature
-        textViewHumidity.setText("H " + String.valueOf(weather.currentCondition.getHumidity()) + "\u0025");  //display the more detailed descriptions
-
 
         textViewSunrise.setText(weather.location.getSunriseDateFormated("hh:mm aa"));  //display sunrise time formatted as above
         textViewSunset.setText(weather.location.getSunsetDateFormated("hh:mm aa"));  //display sunrise time formatted as above
 
-        textViewPressure.setText("P " + String.valueOf(df.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");
-        textViewPercipitationTotal3Hrs.setText("∑rain " + String.valueOf(df.format(weather.rain.getAmmount())) + "″/3hrs");
         System.out.println("Update_Display(): updating text fields" + "P " + String.valueOf(dfXX.format(weather.currentCondition.getPressureImperial())) + "\u2033\u2196");  //print out JSON - comes out in alphabetical order
         System.out.println("Update_Display(): updating text fields" + "∑rain " + String.valueOf(df.format(weather.rain.getAmmount())) + "″/3hrs");  //print out JSON - comes out in alphabetical order
 
-
-        imageViewWeatherIcon.setImageDrawable(Get_Weather_Icon(weather.currentCondition.getIcon()));
         System.out.println("Update_Display():" + versionName + "-" + String.valueOf(versionCode));
         textViewVersion.setText(versionName + "-" + String.valueOf(versionCode));
 
@@ -384,13 +381,10 @@ public class SmartMirror1MainActivityV2 extends Activity {
             textViewNetConnectStatus.setVisibility(View.INVISIBLE); //hide the status flag because comms are present
         else
             textViewNetConnectStatus.setVisibility(View.VISIBLE); //light up  the status flag because comms are not present
-
-
-
     }
 
     //method to display data without weather being passed
-    public void Update_Display(){
+    public void Update_Exchange_Data_Display(){
         System.out.println("Update_Display()");
 
         DecimalFormat df = new DecimalFormat("#.0000");
@@ -401,6 +395,41 @@ public class SmartMirror1MainActivityV2 extends Activity {
 
         textViewEuroDollars.setText(String.valueOf(df.format(1.0f/apiCurrencyExchangeData.rates.getEUR())));
         textViewGBPDollars.setText(String.valueOf(df.format(1.0f/apiCurrencyExchangeData.rates.getGBP())));
+
+    }
+
+    //method to display data without weather being passed
+    public void Update_Weather_Forecast_Display(){
+        System.out.println("Update_Weather_Forecast_Display()");
+
+        DecimalFormat df = new DecimalFormat("#.0");
+        //update currency info
+        //textViewEuroDollars.setText(String.valueOf(df.format(1.0f/apiCurrencyExchangeData.rates.getEUR())));
+
+        textViewWeatherForecast[0][0].setText("Now");  //set the future forecast times, [rows][columns]
+        textViewWeatherForecast[1][0].setText("+3 Hr");
+        textViewWeatherForecast[2][0].setText("+6 Hr");
+        textViewWeatherForecast[3][0].setText("+9 Hr");
+        textViewWeatherForecast[4][0].setText("+12 Hr");
+
+        textViewCurrentTemp.setText(String.valueOf(FiveDayForecastData.list[0].main.getTemp())+"'F");  //display the more detailed descriptions
+
+
+        textViewCityName.setText(FiveDayForecastData.getCity().getname());  //set city name
+
+        textViewPercipitationTotal3Hrs.setText("∑rain " + FiveDayForecastData.list[0].rain.toString3Hr() + "″/3hrs");
+
+        imageViewWeatherIcon.setImageDrawable(Get_Weather_Icon(FiveDayForecastData.list[0].weather[0].getIcon()));
+
+        //textViewOutput.setText(forcastData.list[0].toString()+"\n\n"+forcastData.list[1].weather[0].toString());  example of how to access forecast data
+
+        for (int x = 0; x < 5; x++){  //iterate through the rows: Temperature, Wind, Humidity, Clouds, Description
+            textViewWeatherForecast[x][1].setText(String.valueOf(FiveDayForecastData.list[x].main.getTemp())+"'F"); //set the temperature
+            textViewWeatherForecast[x][2].setText(String.valueOf(FiveDayForecastData.list[x].wind.getSpeed())+"mph");  //set the wind
+            textViewWeatherForecast[x][3].setText(String.valueOf(FiveDayForecastData.list[x].main.gethumidity())+"%");  //set the humidity
+            textViewWeatherForecast[x][4].setText(FiveDayForecastData.list[x].clouds.getPerc()+"'%");  //set the humidity
+            textViewWeatherForecast[x][5].setText(FiveDayForecastData.list[x].weather[0].getDescription());  //set the description
+        }
 
     }
 
@@ -488,7 +517,7 @@ public class SmartMirror1MainActivityV2 extends Activity {
             System.out.println("JSONWeatherTask: onPostExecute: " + returnedWeatherData);  //print out JSON - comes out in alphabetical order
 
             System.out.println("JSONWeatherTask: onPostExecute: Updated text fields");  //print out JSON - comes out in alphabetical order
-            Update_Display(weather);
+            Update_Current_Weather_Display(weather);
 
         }
     }
@@ -544,7 +573,61 @@ public class SmartMirror1MainActivityV2 extends Activity {
             //textViewOutput.setText(result);
             System.out.println("DownloadExchangeJSONTask,onPostExecute():result = "+result);
             System.out.println("DownloadExchangeJSONTask,onPostExecute():apiCurrencyExchangeData = "+apiCurrencyExchangeData.toString());
-            Update_Display();
+            Update_Exchange_Data_Display();
+        }
+    }
+
+    public void RetrieveFiveDayWeatherForecastData(){
+        System.out.println("RetrieveFiveDayWeatherForecastData()");
+        //Before your app attempts to connect to the network, it should check to see whether a network connection is available using getActiveNetworkInfo() and isConnected().
+        // Remember, the device may be out of range of a network, or the user may have disabled both Wi-Fi and mobile data acces
+
+
+        if(FiveDayWeatherData.Check_Network_Connection()){
+            System.out.println("RetrieveFiveDayWeatherForecastData(): Good network connectivity");
+            DownloadFiveDayWeatherForecastDataJSONTask webpageTask = new DownloadFiveDayWeatherForecastDataJSONTask(); //get ready to download exchange data
+            //string for apiFixer
+            //String apiFixerURL = "http://api.fixer.io/latest?symbols=USD,GBP";
+            String JSON_URL = "http://api.openweathermap.org/data/2.5/forecast?q=Cheltenham&units=imperial&appid=40ccc628e578669ca8c47e31599b0d04";
+            webpageTask.execute(JSON_URL);
+            System.out.println("RetrieveFiveDayWeatherForecastData(): webpageTask.execute(JSON_URL) was initiated");
+        }
+        else {
+            // display error
+            System.out.println("RetrieveFiveDayWeatherForecastData(): Error on network connectivity");
+        }
+
+
+    }
+
+    // Uses AsyncTask to create a task away from the main UI thread. This task takes a
+    // URL string and uses it to create an HttpUrlConnection. Once the connection
+    // has been established, the AsyncTask downloads the contents of the webpage as
+    // an InputStream. Finally, the InputStream is converted into a string, which is
+    // displayed in the UI by the AsyncTask's onPostExecute method.
+    private class DownloadFiveDayWeatherForecastDataJSONTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            // params comes from the execute() call: params[0] is the url.
+            try {
+                System.out.println("DownloadFiveDayWeatherForecastDataJSONTask.doInBackground(): try{}");
+                //return downloadUrl(urls[0]);
+                return FiveDayWeatherData.downloadUrl(urls[0]);
+            } catch (IOException e) {
+                return "Unable to retrieve web page. URL may be invalid.";
+            }
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            //apiCurrencyExchangeData = apiFixerDeserializer( result);
+            //apiCurrencyExchangeData.apiFixerDeserializer(result);  //deserialize the returned JSON
+            FiveDayForecastData.openWeatherMapAPI5DayForcastDeserializer(result);
+
+            System.out.println("DownloadFiveDayWeatherForecastDataJSONTask,onPostExecute():result = "+result);
+            //System.out.println("DownloadFiveDayWeatherForecastDataJSONTask,onPostExecute():apiCurrencyExchangeData = "+apiCurrencyExchangeData.toString());
+            Update_Weather_Forecast_Display();
         }
     }
 

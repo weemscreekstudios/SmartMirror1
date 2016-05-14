@@ -10,14 +10,14 @@ import java.text.SimpleDateFormat;
 public class list {
 
     @SerializedName("dt") private long dt;
-    @SerializedName("weather") private weather[] weather;
-    @SerializedName("main") private main main;
-    @SerializedName("snow") snow snow;
-    @SerializedName("wind")private wind wind;
-    @SerializedName("rain")private rain rain;
-    @SerializedName("clouds")private clouds clouds;
-    @SerializedName("dt_text")private String dt_text;
-    @SerializedName("sys")private sys sys;
+    @SerializedName("weather") public weather[] weather;
+    @SerializedName("main") public main main;
+    @SerializedName("snow") public snow snow;
+    @SerializedName("wind")public wind wind;
+    @SerializedName("rain")public rain rain;
+    @SerializedName("clouds")public clouds clouds;
+    @SerializedName("dt_text")public String dt_text;
+    @SerializedName("sys")public sys sys;
 
 
     public void setdt(long dtIn) {dt = dtIn;  }
@@ -64,8 +64,8 @@ public class list {
         String datatime = String.valueOf(sdf.format(dt*1000));  //need to convert from millise
         sb.append(", list.dt="+datatime);
         sb.append(", dt_text="+dt_text+", clouds="+clouds.toString()+wind.toString());
-        sb.append(", "+rain.toString());
-        //sb.append(", snow="+snow.toString());
+        sb.append(", rain="+rain.toString());
+        sb.append(", snow="+snow.toString());
         sb.append(", "+sys.toString());
         sb.append(", "+main.toString());
         sb.append(", weather="+weather[0].toString());
@@ -76,5 +76,11 @@ public class list {
         //member function to make sure there are no null values
         if (dt_text == null)
             dt_text = "YYYY-MM-DD HH:MM:SS";
+        if (rain ==null)
+            rain = new rain();
+            rain.setThreeHours(0.0f);
+        if (snow ==null)
+            snow = new snow();
+            snow.setThreeHours(0.0f);
     }
 }
